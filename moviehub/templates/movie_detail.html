@@ -1,0 +1,64 @@
+
+{% load static %}
+
+
+
+<div class="movie-detail">
+
+    <img src="{{ movie.poster.url }}" class="detail-poster">
+
+    <div class="detail-info">
+
+        <h1>{{ movie.title }}</h1>
+
+        <p>⭐ Rating: {{ movie.rating }}/10</p>
+<p>⏱ Duration: {{ movie.duration }}</p>
+<p>📺 Quality: {{ movie.quality }}</p>
+<p>🌍 Language: {{ movie.language }}</p>
+<p>🎬 Category: {{ movie.category }}</p>
+<p>📅 Release Year: {{ movie.release_year }}</p>
+
+        <p><strong>Description:</strong></p>
+
+        <p>{{ movie.description }}</p>
+
+        <form action="{% url 'add_to_favorites' movie.id %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="favorite-btn">
+        ❤️ Add to My List
+    </button>
+</form>
+
+       {% if movie.video %}
+<video controls width="100%" style="border-radius:10px; margin-top:20px;">
+    <source src="{{ movie.video.url }}" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+<a href="{{ movie.video.url }}" download>
+    <button class="download-btn">⬇ Download Movie</button>
+</a>
+{% else %}
+<p>No video available.</p>
+{% endif %}
+
+    </div>
+
+</div>
+
+<hr style="margin:40px 0;">
+
+<h2>🎬 Related Movies</h2>
+
+<div class="movie-grid">
+    {% for related in related_movies %}
+        <div class="movie-card">
+            <a href="{% url 'movie_detail' related.id %}">
+                <img src="{{ related.poster.url }}" alt="{{ related.title }}">
+                <h3>{{ related.title }}</h3>
+            </a>
+            <p>{{ related.release_year }}</p>
+        </div>
+    {% empty %}
+        <p>No related movies available.</p>
+    {% endfor %}
+</div>

@@ -1,0 +1,275 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biggie Movies</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<nav>
+    <h2>🎬 Biggie Movies</h2>
+
+    <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'movies' %}">Movies</a></li>
+        <li><a href="#">TV Shows</a></li>
+<li><a href="#">Trending</a></li>
+<li><a href="{% url 'my_list' %}">❤️ My List</a></li>
+
+        <li><a href="{% url 'category' 'Action' %}">Action</a></li>
+<li><a href="{% url 'category' 'Comedy' %}">Comedy</a></li>
+<li><a href="{% url 'category' 'Horror' %}">Horror</a></li>
+<li><a href="{% url 'category' 'Romance' %}">Romance</a></li>
+<li><a href="{% url 'category' 'Sci-Fi' %}">Sci-Fi</a></li>
+        
+    </ul>
+
+    <form method="GET" action="">
+    <input type="text"
+           name="q"
+           placeholder="Search movies..."
+           value="{{ request.GET.q }}">
+    <button type="submit">Search</button>
+</form>
+{% if user.is_authenticated %}
+    <span>Welcome, {{ user.username }}</span>
+
+    <form action="{% url 'logout' %}" method="POST" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+
+{% else %}
+    <a href="{% url 'login' %}">
+        <button>Login</button>
+    </a>
+
+    <a href="{% url 'signup' %}">
+        <button>Sign Up</button>
+    </a>
+{% endif %}
+</nav>
+
+<div class="auth-links">
+    <a href="/accounts/login/">
+        <button>Login</button>
+    </a>
+
+    <a href="/signup/">
+        <button>Sign Up</button>
+    </a>
+</div>
+
+{% if featured_movie %}
+<section class="featured">
+
+    {% if featured_movie.poster %}
+    <img src="{{ featured_movie.poster.url }}" class="featured-bg">
+    {% endif %}
+
+    <div class="featured-content">
+
+        <h1>{{ featured_movie.title }}</h1>
+
+        <p>
+            {{ featured_movie.category }}
+            •
+            {{ featured_movie.release_year }}
+        </p>
+
+        <a href="{% url 'movie_detail' featured_movie.id %}">
+            <button class="watch-btn">▶ Watch Now</button>
+        </a>
+
+    </div>
+
+</section>
+{% endif %}
+
+<section class="hero">
+
+    <div class="hero-overlay">
+
+        {% if featured_movie %}
+
+        <h1>{{ featured_movie.title }}</h1>
+
+        <p>{{ featured_movie.description|truncatewords:25 }}</p>
+
+        <a href="{% url 'movie_detail' featured_movie.id %}">
+            <button>▶ Watch Now</button>
+        </a>
+
+        {% else %}
+
+        <h1>Unlimited Movies</h1>
+
+        <p>Watch the latest blockbuster movies anytime.</p>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+<section class="movies">
+
+    <h2>Trending Movies</h2>
+
+    <div class="movie-grid">
+
+        <h2>🔥 Action Movies</h2>
+
+<div class="movie-grid">
+{% for movie in action_movies %}
+<div class="movie-card">
+
+    <div class="poster-container">
+        <img src="{{ movie.poster.url }}" alt="{{ movie.title }}">
+
+        <a href="{% url 'movie_detail' movie.id %}" class="play-button">
+            ▶
+        </a>
+    </div>
+
+    <h3>{{ movie.title }}</h3>
+    <p>{{ movie.release_year }}</p>
+
+    <a href="{% url 'movie_detail' movie.id %}">
+        <button>Watch</button>
+    </a>
+
+</div>
+{% endfor %}
+</div>
+
+<h2>😂 Comedy Movies </h2>
+
+<div class="movie-grid">
+{% for movie in comedy_movies %}
+<div class="movie-card">
+
+    <div class="poster-container">
+        <img src="{{ movie.poster.url }}" alt="{{ movie.title }}">
+
+        <a href="{% url 'movie_detail' movie.id %}" class="play-button">
+            ▶
+        </a>
+    </div>
+
+    <h3>{{ movie.title }}</h3>
+    <p>{{ movie.release_year }}</p>
+
+    <a href="{% url 'movie_detail' movie.id %}">
+        <button>Watch</button>
+    </a>
+
+</div>
+{% endfor %}
+</div>
+
+<h2>👻 Horror Movies</h2>
+
+<div class="movie-grid">
+{% for movie in horror_movies %}
+<div class="movie-card">
+
+    <div class="poster-container">
+        <img src="{{ movie.poster.url }}" alt="{{ movie.title }}">
+
+        <a href="{% url 'movie_detail' movie.id %}" class="play-button">
+            ▶
+        </a>
+    </div>
+
+    <h3>{{ movie.title }}</h3>
+    <p>{{ movie.release_year }}</p>
+
+    <a href="{% url 'movie_detail' movie.id %}">
+        <button>Watch</button>
+    </a>
+
+</div>
+{% endfor %}
+</div>
+
+<h2>❤️ Romance Movies</h2>
+
+<div class="movie-grid">
+{% for movie in romance_movies %}
+<div class="movie-card">
+
+    <div class="poster-container">
+        <img src="{{ movie.poster.url }}" alt="{{ movie.title }}">
+
+        <a href="{% url 'movie_detail' movie.id %}" class="play-button">
+            ▶
+        </a>
+    </div>
+
+    <h3>{{ movie.title }}</h3>
+    <p>{{ movie.release_year }}</p>
+
+    <a href="{% url 'movie_detail' movie.id %}">
+        <button>Watch</button>
+    </a>
+
+</div>
+{% endfor %}
+</div>
+
+<h2>🚀 Sci-Fi</h2>
+
+<div class="movie-grid">
+{% for movie in scifi_movies %}
+<div class="movie-card">
+
+    <div class="poster-container">
+        <img src="{{ movie.poster.url }}" alt="{{ movie.title }}">
+
+        <a href="{% url 'movie_detail' movie.id %}" class="play-button">
+            ▶
+        </a>
+    </div>
+
+    <h3>{{ movie.title }}</h3>
+    <p>{{ movie.release_year }}</p>
+
+    <a href="{% url 'movie_detail' movie.id %}">
+        <button>Watch</button>
+    </a>
+
+</div>
+{% endfor %}
+</div>
+            <h3>{{ movie.title }}</h3>
+
+            <p>{{ movie.category }}</p>
+
+            <p>{{ movie.release_year }}</p>
+
+            {% if movie.video %}
+            <a href="{% url 'movie_detail' movie.id %}">
+                <button>Watch</button>
+            </a>
+            {% endif %}
+
+        </div>
+
+
+
+    </div>
+
+</section>
+
+<footer>
+    <p>© 2026 Biggie Movies. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>

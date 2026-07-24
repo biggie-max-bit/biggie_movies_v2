@@ -1,0 +1,45 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Movies - Biggie Movies</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<h1>🎬 All Movies</h1>
+
+<div class="movie-grid">
+
+{% for movie in movies %}
+
+<div class="movie-card">
+
+    <a href="{% url 'movie_detail' movie.id %}">
+        <img src="{{ movie.poster.url }}" alt="{{ movie.title }}">
+    </a>
+
+    <h3>{{ movie.title }}</h3>
+
+    <p>⭐ {{ movie.rating }}/10</p>
+
+    <p>{{ movie.release_year }}</p>
+
+    <a href="{% url 'movie_detail' movie.id %}">
+        <button>Watch Now</button>
+    </a>
+
+</div>
+
+{% empty %}
+
+<p>No movies available.</p>
+
+{% endfor %}
+
+</div>
+
+</body>
+</html>
