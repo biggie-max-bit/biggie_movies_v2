@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-y@#$^dip69mjh1sv=439z76g)enksk_az$ptx84x5fb#8%x8cg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "biggie-movies-v2.onrender.com",
+]
 
 
 # Application definition
